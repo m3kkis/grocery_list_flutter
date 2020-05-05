@@ -1,4 +1,10 @@
+import 'dart:io';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import '../helpers/database_helper.dart';
 import '../models/product_model.dart';
 
@@ -18,6 +24,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   String _name = '';
   String _quantity = '';
   String _priority;
+  String _imagePath = '';
 
   final List<String> _priorities = ['Not Important','Important'];
 
@@ -29,19 +36,49 @@ class _AddProductScreenState extends State<AddProductScreen> {
       _name = widget.product.name;
       _quantity = widget.product.quantity;
       _priority = widget.product.priority;
+      _imagePath = widget.product.imagePath;
     }
 
   }
 
+  Future _getImage() async{
+    File image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    if (image == null) return;
+
+    GallerySaver.saveImage(image.path);
+
+
+    setState(() {
+      _imagePath = image.path.toString();
+      print('IMAGE PATH : ' + _imagePath);
+    });
+
+
+    /*
+    var directory = await getApplicationDocumentsDirectory();
+    var path = directory.path ;
+
+    File newImage = await image.copy('$path/' + DateTime.now().millisecondsSinceEpoch.toString() + '.png');
+
+    setState(() {
+      _image = newImage;
+      print('IMAGE PATH : ' + _image.toString());
+    });
+     */
+  }
+
+/*
   _delete(){
     DatabaseHelper.instance.deleteProduct(widget.product.id);
     widget.updateProductList();
     Navigator.pop(context);
   }
+  */
 
   _remove(){
 
-    Product product = Product(name: _name, quantity: _quantity, priority: _priority);
+    Product product = Product(name: _name, quantity: _quantity, priority: _priority, imagePath: _imagePath);
 
     product.id = widget.product.id;
     product.status = widget.product.status;
@@ -55,9 +92,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
   _submit(){
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
-      print('$_name,$_quantity,$_priority');
+      print('$_name,$_quantity,$_priority,$_imagePath');
 
-      Product product = Product(name: _name, quantity: _quantity, priority: _priority);
+      Product product = Product(name: _name, quantity: _quantity, priority: _priority, imagePath: _imagePath);
       if(widget.product == null){
         //insert the product
         product.status = 0;
@@ -177,6 +214,25 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             });
                           },
                           value: _priority,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 20.0),
+                        height: 60.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(30.0)
+                        ),
+                        child: FlatButton(
+                          child: Text(
+                           'Take photo',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.0
+                            ),
+                          ),
+                          onPressed: _getImage,
                         ),
                       ),
                       Container(

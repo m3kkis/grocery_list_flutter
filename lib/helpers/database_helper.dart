@@ -17,6 +17,7 @@ class DatabaseHelper{
   String colPriority  = 'priority';
   String colStatus = 'status';
   String colToBuy = 'toBuy';
+  String colImagePath = 'imagePath';
 
   Future<Database> get db async {
     if(_db == null){
@@ -40,7 +41,8 @@ class DatabaseHelper{
             '$colQuantity TEXT, '
             '$colPriority TEXT, '
             '$colStatus INTEGER, '
-            '$colToBuy INTEGER)'
+            '$colToBuy INTEGER, '
+            '$colImagePath TEXT)'
     );
   }
 ////////////////////////////////////////////////

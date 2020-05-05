@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import '../helpers/database_helper.dart';
 import '../models/product_model.dart';
 
@@ -30,19 +34,50 @@ class _AllProductScreenState extends State<AllProductScreen> {
     _updateProductList();
   }
 
+
   Widget _buildTileProduct(Product product){
+    return GestureDetector(
+        child: Scaffold(
+          body: Container(
+            padding: EdgeInsets.fromLTRB(10,10,10,0),
+            height: 220,
+            width: double.maxFinite,
+            child: Card(
+              elevation: 5,
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 1.0),
+                    child: Image.file(File(product.imagePath)),
+                  ),
+                  Text(
+                    '${product.name}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      backgroundColor: Colors.black
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+    );
+/*
     return new GestureDetector(
       child: Card(
         elevation: 5.0,
         child: Container(
           alignment: Alignment.center,
-          child: Text('${product.name}'),
+          child: product.imagePath == null ? Text('${product.name}') : Image.file(File(product.imagePath)),
         ),
       ),
       onLongPress: () => {
         _delete(product)
       },
     );
+
+ */
   }
 
 

@@ -6,10 +6,11 @@ class Product {
   String priority;
   int status;
   int toBuy;
+  String imagePath;
 
-  Product({this.name, this.quantity, this.priority, this.status, this.toBuy});
+  Product({this.name, this.quantity, this.priority, this.status, this.toBuy, this.imagePath});
 
-  Product.withId({this.id, this.name, this.quantity, this.priority, this.status, this.toBuy});
+  Product.withId({this.id, this.name, this.quantity, this.priority, this.status, this.toBuy, this.imagePath});
 
   Map<String, dynamic> toMap(){
     final map = Map<String, dynamic>();
@@ -24,6 +25,7 @@ class Product {
     map['priority'] = priority;
     map['status'] = status;
     map['toBuy'] = toBuy;
+    map['imagePath'] = imagePath;
 
     return map;
   }
@@ -36,7 +38,8 @@ class Product {
         quantity: map['quantity'],
         priority: map['priority'],
         status: map['status'],
-        toBuy: map['toBuy']
+        toBuy: map['toBuy'],
+        imagePath: map['imagePath']
     );
   }
 
