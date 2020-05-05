@@ -1,4 +1,4 @@
-# grocery_list
+# grocery_list_flutter
 
 A flutter app to track your grocery to-buy list. Another learning flutter app similar structure to my task list flutter app but with additional personal features added.
 
